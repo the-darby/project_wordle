@@ -1,0 +1,158 @@
+/* --- Color Palette & Global Variables --- */
+:root {
+  --bg-color: #121213;
+  --text-color: #ffffff;
+  --border-color: #3a3a3c;
+  
+  /* Game State Colors */
+  --correct: #538d4e;  /* Green */
+  --present: #b59f3b;  /* Yellow */
+  --absent: #3a3a3c;   /* Dark Gray */
+  --key-bg: #818384;   /* Light Gray for unused keys */
+}
+
+/* --- Base Layout --- */
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh; /* Takes up the full height of the browser */
+}
+
+header {
+  width: 100%;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  text-align: center;
+  margin: 10px 0;
+  font-size: 2rem;
+  letter-spacing: 2px;
+}
+
+/* --- The Game Board (CSS Grid) --- */
+#board-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1; /* Pushes the keyboard to the bottom */
+  width: 100%;
+}
+
+#board {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 columns of equal width */
+  grid-template-rows: repeat(6, 1fr);    /* 6 rows */
+  gap: 5px;                              /* Space between tiles */
+  width: 350px;
+  max-width: 90vw;                       /* Keeps it responsive on mobile */
+  padding: 10px;
+}
+
+/* --- Individual Tiles --- */
+.tile {
+  width: 100%;
+  aspect-ratio: 1; /* Keeps the tiles perfectly square */
+  border: 2px solid var(--border-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  box-sizing: border-box;
+}
+
+/* --- Dynamic Javascript States --- */
+.tile.correct {
+  background-color: var(--correct);
+  border-color: var(--correct);
+}
+
+.tile.present {
+  background-color: var(--present);
+  border-color: var(--present);
+}
+
+.tile.absent {
+  background-color: var(--absent);
+  border-color: var(--absent);
+}
+
+/* --- The Keyboard --- */
+#keyboard-container {
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 20px;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+#keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Space between rows */
+}
+
+.keyboard-row {
+  display: flex;
+  justify-content: center;
+  gap: 6px; /* Space between keys */
+}
+
+.key {
+  background-color: var(--key-bg);
+  color: var(--text-color);
+  border: none;
+  border-radius: 4px;
+  height: 58px;
+  flex: 1; /* Allows keys to stretch evenly */
+  max-width: 45px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+}
+
+/* Special styling for Enter and Backspace to make them wider */
+.key.large {
+  flex: 1.5; 
+  max-width: 70px;
+  font-size: 1rem;
+}
+
+/* Keyboard state colors mirroring the tiles */
+.key.correct { background-color: var(--correct); }
+.key.present { background-color: var(--present); }
+.key.absent { background-color: var(--absent); }
+
+/* --- Messages / Popups --- */
+#message-container {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.message {
+  background-color: var(--text-color);
+  color: var(--bg-color);
+  padding: 15px;
+  border-radius: 5px;
+  font-weight: bold;
+  opacity: 1;
+  transition: opacity 0.5s ease-out;
+}
