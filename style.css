@@ -123,6 +123,14 @@ header h1 {
   text-transform: uppercase;
 }
 
+.key:active {
+  transform: scale(0.95);
+}
+
+.key:focus {
+  outline: none;
+}
+
 /* Special styling for Enter and Backspace to make them wider */
 .key.large {
   flex: 1.5; 
