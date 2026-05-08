@@ -1,4 +1,5 @@
 const targetWord = "GHOST";
+const keyboard = document.getElementById("keyboard");
 let currentRow = 0;
 let currentTile = 0;
 let isGameOver = false;
@@ -24,7 +25,7 @@ function initializeKeyboard() {
 		['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
 		['ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '⌫']
 	];
-	const keyboard = document.getElementById("keyboard");
+
 	keys.forEach((letterArray) => {
 		const row = document.createElement('div');
 		row.classList.add("keyboard-row");
@@ -45,3 +46,31 @@ function initializeKeyboard() {
 }
 
 initializeKeyboard();
+
+function handleInput(key) {
+	if (isGameOver) {
+		return;
+	}
+	const normalizedKey = key.toUpperCase();
+	if (normalizedKey === "⌫" || normalizedKey === "BACKSPACE") {
+		console.log("Deleting letter");
+	} else if (normalizedKey === "ENTER") {
+		console.log("Checking guess");
+	} else if (/^[A-Z]$/.test(normalizedKey)) {
+		console.log(`Adding letter: ${normalizedKey}`);
+	}
+}
+
+
+
+document.addEventListener("keydown", (event) => {
+	if (event.key === "Enter") event.preventDefault();
+	handleInput(event.key);
+});
+
+keyboard.addEventListener("click", (event) => {
+	if (event.target.tagName === "BUTTON") {
+		handleInput(event.target.id);
+	}
+});
+
