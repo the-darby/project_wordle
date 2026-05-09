@@ -1,5 +1,5 @@
-const targetWord = "GHOST";
 const keyboard = document.getElementById("keyboard");
+let targetWord = "";
 let validWords = [];
 let currentRow = 0;
 let currentTile = 0;
@@ -14,6 +14,24 @@ function loadDictionary() {
 }
 
 loadDictionary();
+
+function loadDailyWord() {
+	fetch("daily_word.json")
+		.then(response => {
+			if (!response.ok) throw new Error("file not found");
+			return response.json();
+		})
+		.then(data => {
+			targetWord = data.word;
+			console.log("Daily word loaded");
+		})
+		.catch(error => {
+			console.error("Error loading daily word:", error);
+			targetWord = "ERROR";
+		});
+}
+
+loadDailyWord();
 
 
 function initializeBoard() {
