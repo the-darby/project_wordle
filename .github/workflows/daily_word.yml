@@ -2,8 +2,8 @@ name: Generate Daily Word
 
 on:
   schedule:
-    - chron: '0 0 * * *'
-  workflow_distpatch:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -24,7 +24,7 @@ jobs:
         run: python daily_update.py
 
       - name: Security Verification (Enforce JSON only)
-        -run: |
+        run: |
           UNEXPECTED_FILES=$(git status --porcelain | grep -v "daily_word.json" || true)
 
           if [ -n "$UNEXPECTED_FILES" ]; then
