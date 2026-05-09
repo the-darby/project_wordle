@@ -1,0 +1,45 @@
+name: Generate Daily Word
+
+on:
+  schedule:
+    - chron: '0 0 * * *'
+  workflow_distpatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-word:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run Word Picker Script
+        run: python daily_update.py
+
+      - name: Security Verification (Enforce JSON only)
+        -run: |
+          UNEXPECTED_FILES=$(git status --porcelain | grep -v "daily_word.json" || true)
+
+          if [ -n "$UNEXPECTED_FILES" ]; then
+            echo "UNAUTHORIZED CHANGES TO FILES:"
+            echo "$UNEXPECTED_FILES"
+            exit 1
+          fi
+
+          echo "Verification passed"
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+          git add daily_word.json
+          git commit -m "Automated update: generate daily word"
+          git push
